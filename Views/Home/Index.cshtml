@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Kitaplar</h5>
+                    <p class="card-text">Kitap listesini görüntüleyin ve yönetin.</p>
+                    <a asp-controller="Kitap" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-book"></i> Kitaplara Git
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Kategoriler</h5>
+                    <p class="card-text">Kitap kategorilerini görüntüleyin ve yönetin.</p>
+                    <a asp-controller="KitapKategori" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-tags"></i> Kategorilere Git
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Sınıflar</h5>
+                    <p class="card-text">Sınıf listesini görüntüleyin ve yönetin.</p>
+                    <a asp-controller="Sinif" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-people"></i> Sınıflara Git
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

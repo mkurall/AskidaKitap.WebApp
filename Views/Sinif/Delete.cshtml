@@ -1,0 +1,45 @@
+@model AskidaKitap.WebApp.Models.Sinif
+
+@{
+    ViewData["Title"] = "Sınıf Sil";
+}
+
+<div class="container">
+    <h2>Sınıf Sil</h2>
+
+    <div class="alert alert-danger">
+        <h4>Bu sınıfı silmek istediğinizden emin misiniz?</h4>
+        <p>Bu işlem geri alınamaz!</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Sınıf Bilgileri</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Sınıf Adı</dt>
+                <dd class="col-sm-9">@Model.Ad</dd>
+
+                <dt class="col-sm-3">Kayıt Tarihi</dt>
+                <dd class="col-sm-9">@Model.KayitTarihi.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3">Durum</dt>
+                <dd class="col-sm-9">
+                    @if (Model.AktifMi)
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-3">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+    </form>
+</div> 

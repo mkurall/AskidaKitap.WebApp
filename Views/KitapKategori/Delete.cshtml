@@ -1,0 +1,40 @@
+@model AskidaKitap.WebApp.Models.KitapKategori
+
+@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Kategori Sil</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h4>Bu kategoriyi silmek istediğinizden emin misiniz?</h4>
+                        <p>Bu işlem geri alınamaz!</p>
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Ad)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad)</dd>
+                    </dl>
+
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
