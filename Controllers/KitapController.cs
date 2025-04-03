@@ -201,6 +201,28 @@ namespace AskidaKitap.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: Kitap/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var kitap = await _context.Kitaplar
+                .Include(k => k.KitapKategori)
+                .Include(k => k.KitapKimde)
+                    .ThenInclude(kk => kk.Ogrenci)
+                .FirstOrDefaultAsync(k => k.Id == id);
+
+            if (kitap == null)
+            {
+                return NotFound();
+            }
+
+            return View(kitap);
+        }
+
         private bool KitapExists(int id)
         {
             return _context.Kitaplar.Any(e => e.Id == id);

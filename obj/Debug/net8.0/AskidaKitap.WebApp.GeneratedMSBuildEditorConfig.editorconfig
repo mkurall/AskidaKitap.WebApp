@@ -54,6 +54,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2l0YXBcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Administrator/Desktop/Tubitak/Apps/AskidaKitap2/AskidaKitap.WebApp/Views/Kitap/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2l0YXBcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Administrator/Desktop/Tubitak/Apps/AskidaKitap2/AskidaKitap.WebApp/Views/Kitap/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2l0YXBcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -68,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Administrator/Desktop/Tubitak/Apps/AskidaKitap2/AskidaKitap.WebApp/Views/Ogrenci/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2dyZW5jaVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Administrator/Desktop/Tubitak/Apps/AskidaKitap2/AskidaKitap.WebApp/Views/Ogrenci/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT2dyZW5jaVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Administrator/Desktop/Tubitak/Apps/AskidaKitap2/AskidaKitap.WebApp/Views/Ogrenci/Edit.cshtml]

@@ -1,0 +1,281 @@
+@model AskidaKitap.WebApp.Models.Kitap
+
+@{
+    ViewData["Title"] = "Kitap Detayı";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Kitap Detayı</h1>
+        <div>
+            <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#ogrenciAramaModal">
+                <i class="bi bi-book"></i> Kitabı Ver
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Yazar)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Yazar)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.KitapKategori)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.KitapKategori.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.SayfaSayisi)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.SayfaSayisi)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StokAdedi)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.StokAdedi)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Düzenle
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <h3>Kitabı Alan ve İade Eden Öğrenciler</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Öğrenci No</th>
+                        <th>Ad</th>
+                        <th>Soyad</th>
+                        <th>Alınma Tarihi</th>
+                        <th>İade Tarihi</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var kayit in Model.KitapKimde.OrderByDescending(k => k.AlinmaTarihi))
+                    {
+                        <tr>
+                            <td>@kayit.Ogrenci.OgrenciNo</td>
+                            <td>@kayit.Ogrenci.Ad</td>
+                            <td>@kayit.Ogrenci.Soyad</td>
+                            <td>@kayit.AlinmaTarihi.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                @if (kayit.IadeTarihi.HasValue)
+                                {
+                                    <span class="text-success">
+                                        <i class="bi bi-check-circle-fill"></i> @kayit.IadeTarihi.Value.ToString("dd.MM.yyyy")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">
+                                        <i class="bi bi-clock"></i> İade Bekliyor
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                @if (kayit.IadeTarihi == null)
+                                {
+                                    <button class="btn btn-warning btn-sm" onclick="kitapIade(@kayit.Id)">
+                                        <i class="bi bi-arrow-return-left"></i> İade Al
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> İade Alındı
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.KitapKimde.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">Kitabı alan öğrenci bulunmuyor.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Öğrenci Arama Modal -->
+<div class="modal fade" id="ogrenciAramaModal" tabindex="-1" aria-labelledby="ogrenciAramaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ogrenciAramaModalLabel">Öğrenci Ara</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="searchInput" class="form-label">Öğrenci Numarası, Adı veya Soyadı</label>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Arama yapın...">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="ogrenciTable">
+                        <thead>
+                            <tr>
+                                <th>Öğrenci No</th>
+                                <th>Ad</th>
+                                <th>Soyad</th>
+                                <th class="text-end">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        const ogrenciTable = document.getElementById('ogrenciTable').getElementsByTagName('tbody')[0];
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchString = this.value.trim();
+                if (searchString.length >= 2) {
+                    searchOgrenci(searchString);
+                } else {
+                    ogrenciTable.innerHTML = '';
+                }
+            }, 300);
+        });
+
+        async function searchOgrenci(searchString) {
+            try {
+                const response = await fetch(`/KitapDegisim/OgrenciAra?searchString=${encodeURIComponent(searchString)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    if (result.data.length === 0) {
+                        showAlert('Arama kriterlerine uygun öğrenci bulunamadı.', 'warning');
+                        ogrenciTable.innerHTML = '';
+                        return;
+                    }
+                    displayOgrenciler(result.data);
+                } else {
+                    showAlert(result.message, 'warning');
+                    ogrenciTable.innerHTML = '';
+                }
+            } catch (error) {
+                showAlert('Öğrenci arama sırasında bir hata oluştu.', 'danger');
+                ogrenciTable.innerHTML = '';
+            }
+        }
+
+        function displayOgrenciler(ogrenciler) {
+            ogrenciTable.innerHTML = '';
+            ogrenciler.forEach(ogrenci => {
+                const row = ogrenciTable.insertRow();
+                row.innerHTML = `
+                    <td>${ogrenci.ogrenciNo || ''}</td>
+                    <td>${ogrenci.ad || ''}</td>
+                    <td>${ogrenci.soyad || ''}</td>
+                    <td class="text-end">
+                        <button class="btn btn-success btn-sm" onclick="kitapVer(${@Model.Id}, '${ogrenci.id}')">
+                            <i class="bi bi-book"></i> Kitabı Ver
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        async function kitapVer(kitapId, ogrenciId) {
+            try {
+                const formData = new FormData();
+                formData.append('kitapId', kitapId);
+                formData.append('ogrenciId', ogrenciId);
+
+                const response = await fetch('/KitapDegisim/KitapVer', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Modal'ı kapat
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('ogrenciAramaModal'));
+                    modal.hide();
+                    
+                    showAlert(result.message, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                showAlert('Kitap verme işlemi sırasında bir hata oluştu.', 'danger');
+            }
+        }
+
+        async function kitapIade(kitapKimdeId) {
+            if (!confirm('Kitabı iade almak istediğinize emin misiniz?')) {
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('kitapKimdeId', kitapKimdeId);
+
+                const response = await fetch('/KitapDegisim/KitapIade', {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                showAlert('Kitap iade işlemi sırasında bir hata oluştu.', 'danger');
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Alert'i container'ın en üstüne ekle
+            const container = document.querySelector('.container');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            // 5 saniye sonra alert'i kaldır
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+    </script>
+} 

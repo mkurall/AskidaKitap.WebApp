@@ -136,3 +136,4 @@ C:\Users\Administrator\Desktop\Tubitak\Apps\AskidaKitap2\AskidaKitap.WebApp\bin\
 C:\Users\Administrator\Desktop\Tubitak\Apps\AskidaKitap2\AskidaKitap.WebApp\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Administrator\Desktop\Tubitak\Apps\AskidaKitap2\AskidaKitap.WebApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Administrator\Desktop\Tubitak\Apps\AskidaKitap2\AskidaKitap.WebApp\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Administrator\Desktop\Tubitak\Apps\AskidaKitap2\AskidaKitap.WebApp\obj\Debug\net8.0\AskidaKitap.WebApp.sourcelink.json

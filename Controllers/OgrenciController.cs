@@ -35,6 +35,28 @@ namespace AskidaKitap.WebApp.Controllers
             return View(ogrenciler);
         }
 
+        // GET: Ogrenci/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ogrenci = await _context.Ogrenciler
+                .Include(o => o.Kitaplar)
+                    .ThenInclude(k => k.Kitap)
+                        .ThenInclude(k => k.KitapKategori)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (ogrenci == null)
+            {
+                return NotFound();
+            }
+
+            return View(ogrenci);
+        }
+
         // GET: Ogrenci/Create
         public IActionResult Create()
         {
