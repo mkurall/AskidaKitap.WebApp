@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace AskidaKitap.WebApp.Models
 {
@@ -37,5 +38,7 @@ namespace AskidaKitap.WebApp.Models
         public bool OnayDurumu { get; set; }
 
         public virtual ICollection<KitapKimde> Kitaplar { get; set; } = new List<KitapKimde>();
+
+        public ICollection<KitapDegisim> KitapDegisimler { get; set; } = new List<KitapDegisim>();
     }
 } 

@@ -27,6 +27,24 @@ namespace AskidaKitap.WebApp.Data
                 .WithMany(s => s.Ogrenciler)
                 .HasForeignKey(o => o.SinifId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Kitap>()
+                .HasOne(k => k.KitapKategori)
+                .WithMany(kk => kk.Kitaplar)
+                .HasForeignKey(k => k.KitapKategoriId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<KitapDegisim>()
+                .HasOne(kd => kd.Kitap)
+                .WithMany(k => k.KitapDegisimler)
+                .HasForeignKey(kd => kd.KitapId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<KitapDegisim>()
+                .HasOne(kd => kd.Ogrenci)
+                .WithMany(o => o.KitapDegisimler)
+                .HasForeignKey(kd => kd.OgrenciId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 } 

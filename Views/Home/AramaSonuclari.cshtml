@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Arama Sonuçları";
+}
+
+<div class="container mt-4">
+    <!-- Arama Kutusu -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="aramaKutusu" class="form-control form-control-lg" 
+                       placeholder="Kitap adı, yazar veya kategori ara..." 
+                       aria-label="Kitap arama"
+                       value="@ViewBag.AramaKelimesi">
+                <button class="btn btn-primary" type="button" id="araButton">
+                    <i class="bi bi-search"></i> Ara
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Geri Dön Butonu -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8 text-center">
+            <a href="/" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Ana Sayfaya Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- Arama Sonuçları -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div id="aramaSonuclari">
+                <h3 class="mb-3">"@ViewBag.AramaKelimesi" için arama sonuçları</h3>
+                <div id="kitapListesi" class="list-group">
+                    @if (ViewBag.Kitaplar != null && ViewBag.Kitaplar.Count > 0)
+                    {
+                        foreach (var kitap in ViewBag.Kitaplar)
+                        {
+                            <div class="list-group-item kitap-karti">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">@kitap.Ad</h5>
+                                        <p class="mb-1">@kitap.Yazar</p>
+                                        <small class="text-muted">@kitap.Kategori</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="stok-durumu @(kitap.StokDurumu ? "stok-var" : "stok-yok")">
+                                            <i class="bi @(kitap.StokDurumu ? "bi-check-circle-fill" : "bi-x-circle-fill")"></i>
+                                            @(kitap.StokDurumu ? "Stokta Var" : "Stokta Yok")
+                                        </span>
+                                        @if (kitap.StokDurumu)
+                                        {
+                                            <div class="mt-2">Stok: @kitap.StokAdedi</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">Aramanızla eşleşen kitap bulunamadı.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .kitap-karti {
+            transition: all 0.3s ease;
+        }
+        .kitap-karti:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .stok-durumu {
+            font-size: 0.9rem;
+        }
+        .stok-var {
+            color: #28a745;
+        }
+        .stok-yok {
+            color: #dc3545;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const aramaKutusu = document.getElementById('aramaKutusu');
+            const araButton = document.getElementById('araButton');
+
+            // Enter tuşu ile arama
+            aramaKutusu.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const yeniAramaKelimesi = aramaKutusu.value.trim();
+                    if (yeniAramaKelimesi) {
+                        window.location.href = `/Home/AramaSonuclari?q=${encodeURIComponent(yeniAramaKelimesi)}`;
+                    }
+                }
+            });
+
+            // Ara butonu ile arama
+            araButton.addEventListener('click', function() {
+                const yeniAramaKelimesi = aramaKutusu.value.trim();
+                if (yeniAramaKelimesi) {
+                    window.location.href = `/Home/AramaSonuclari?q=${encodeURIComponent(yeniAramaKelimesi)}`;
+                }
+            });
+        });
+    </script>
+} 

@@ -2,40 +2,325 @@
     ViewData["Title"] = "Ana Sayfa";
 }
 
+@model HomeViewModel
+
+<!-- 1. Satır - Carousel -->
+<div class="container-fluid px-0">
+    <div id="anaCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#anaCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#anaCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#anaCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/images/carousel1.jpg" class="d-block w-100" alt="Kitap Okuma">
+                <div class="carousel-caption">
+                    <h3>Kitap Okumak Hayattır</h3>
+                    <p>Her kitap yeni bir dünyadır</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/carousel2.jpg" class="d-block w-100" alt="Kütüphane">
+                <div class="carousel-caption">
+                    <h3>Kütüphanemiz Sizlerle</h3>
+                    <p>Binlerce kitap sizi bekliyor</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/carousel3.jpg" class="d-block w-100" alt="Okuma Saati">
+                <div class="carousel-caption">
+                    <h3>Okuma Saati</h3>
+                    <p>Her gün 1 saat kitap okuyun</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#anaCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#anaCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<!-- 2. Satır - Arama Kutusu -->
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="aramaKutusu" class="form-control form-control-lg" 
+                       placeholder="Kitap adı, yazar veya kategori ara..." 
+                       aria-label="Kitap arama">
+                <button class="btn btn-primary" type="button" id="araButton">
+                    <i class="bi bi-search"></i> Ara
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Satır - Ana İçerik -->
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-4">
+        <!-- Sol Bölüm - Top 10 Listeleri -->
+        <div class="col-md-2">
+            <!-- En Çok Okunan Kitaplar -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">En Çok Okunan Kitaplar</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Kitap</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int sira = 1;
+                                    foreach (var kitap in Model.EnCokOkunanKitaplar)
+                                    {
+                                        <tr>
+                                            <td>@sira</td>
+                                            <td>
+                                                <small>@kitap.KitapAdi</small>
+                                                <br>
+                                                <small class="text-muted">@kitap.OkunmaSayisi okuma</small>
+                                            </td>
+                                        </tr>
+                                        sira++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- En Çok Kitap Okuyan Öğrenciler -->
             <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Kitaplar</h5>
-                    <p class="card-text">Kitap listesini görüntüleyin ve yönetin.</p>
-                    <a asp-controller="Kitap" asp-action="Index" class="btn btn-primary">
-                        <i class="bi bi-book"></i> Kitaplara Git
-                    </a>
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">En Çok Okuyan Öğrenciler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Öğrenci</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    sira = 1;
+                                    foreach (var ogrenci in Model.EnCokKitapOkuyanOgrenciler)
+                                    {
+                                        <tr>
+                                            <td>@sira</td>
+                                            <td>
+                                                <small>@ogrenci.OgrenciAdi @ogrenci.OgrenciSoyadi</small>
+                                                <br>
+                                                <small class="text-muted">@ogrenci.OkunanKitapSayisi kitap</small>
+                                            </td>
+                                        </tr>
+                                        sira++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Kategoriler</h5>
-                    <p class="card-text">Kitap kategorilerini görüntüleyin ve yönetin.</p>
-                    <a asp-controller="KitapKategori" asp-action="Index" class="btn btn-primary">
-                        <i class="bi bi-tags"></i> Kategorilere Git
-                    </a>
+
+        <!-- Orta Bölüm - Fotoğraflar -->
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="~/images/kitap1.jpg" class="card-img-top" alt="Kitap 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Yeni Gelen Kitaplar</h5>
+                            <p class="card-text">Bu ay kütüphanemize eklenen yeni kitapları keşfedin.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="~/images/kitap2.jpg" class="card-img-top" alt="Kitap 2">
+                        <div class="card-body">
+                            <h5 class="card-title">En Çok Okunanlar</h5>
+                            <p class="card-text">Öğrencilerimizin en çok tercih ettiği kitaplar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="~/images/kitap3.jpg" class="card-img-top" alt="Kitap 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Klasikler</h5>
+                            <p class="card-text">Zamanın sınavından geçmiş klasik eserler.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arama Sonuçları -->
+            <div id="aramaSonuclari" class="d-none">
+                <h3 class="mb-3">Arama Sonuçları</h3>
+                <div id="kitapListesi" class="list-group">
+                    <!-- Arama sonuçları buraya gelecek -->
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+
+        <!-- Sağ Bölüm - Duyurular ve Son İşlemler -->
+        <div class="col-md-2">
+            <!-- Duyurular -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Duyurular</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Yeni Kitaplar</h6>
+                                <small>3 gün önce</small>
+                            </div>
+                            <p class="mb-1 small">Kütüphanemize yeni kitaplar eklendi.</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Okuma Yarışması</h6>
+                                <small>1 hafta önce</small>
+                            </div>
+                            <p class="mb-1 small">Mayıs ayı okuma yarışması başlıyor!</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Son İşlemler -->
             <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Sınıflar</h5>
-                    <p class="card-text">Sınıf listesini görüntüleyin ve yönetin.</p>
-                    <a asp-controller="Sinif" asp-action="Index" class="btn btn-primary">
-                        <i class="bi bi-people"></i> Sınıflara Git
-                    </a>
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">Son İşlemler</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Kitap Alındı</h6>
+                                <small>5 dk önce</small>
+                            </div>
+                            <p class="mb-1 small">Ahmet Yılmaz - Sefiller</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Kitap İade</h6>
+                                <small>1 saat önce</small>
+                            </div>
+                            <p class="mb-1 small">Ayşe Demir - Suç ve Ceza</p>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .carousel-item {
+            height: 250px;
+        }
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+        }
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .kitap-karti {
+            transition: all 0.3s ease;
+        }
+        .kitap-karti:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .stok-durumu {
+            font-size: 0.9rem;
+        }
+        .stok-var {
+            color: #28a745;
+        }
+        .stok-yok {
+            color: #dc3545;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            font-weight: bold;
+        }
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+        .list-group-item:first-child {
+            border-top: none;
+        }
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        .table td {
+            padding: 0.5rem;
+        }
+        .table th {
+            padding: 0.5rem;
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const aramaKutusu = document.getElementById('aramaKutusu');
+            const araButton = document.getElementById('araButton');
+
+            // Enter tuşu ile arama
+            aramaKutusu.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const aramaKelimesi = aramaKutusu.value.trim();
+                    if (aramaKelimesi) {
+                        window.location.href = `/Home/AramaSonuclari?q=${encodeURIComponent(aramaKelimesi)}`;
+                    }
+                }
+            });
+
+            // Ara butonu ile arama
+            araButton.addEventListener('click', function() {
+                const aramaKelimesi = aramaKutusu.value.trim();
+                if (aramaKelimesi) {
+                    window.location.href = `/Home/AramaSonuclari?q=${encodeURIComponent(aramaKelimesi)}`;
+                }
+            });
+        });
+    </script>
+}

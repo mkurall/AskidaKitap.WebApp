@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AskidaKitap.WebApp.Models
@@ -24,5 +25,6 @@ namespace AskidaKitap.WebApp.Models
         // Navigation properties
         public KitapKategori? KitapKategori { get; set; }
         public ICollection<KitapKimde> KitapKimde { get; set; } = new List<KitapKimde>();
+        public ICollection<KitapDegisim> KitapDegisimler { get; set; } = new List<KitapDegisim>();
     }
 } 
