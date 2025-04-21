@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\AskidaKitap.WebApp.props" />
-</Project>
