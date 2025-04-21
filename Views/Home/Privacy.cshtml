@@ -1,6 +1,95 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Gizlilik Politikası";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Kişisel Verilerin Korunması</h2>
+            <p class="card-text">
+                Askıda Kitap uygulaması olarak, kullanıcılarımızın kişisel verilerinin güvenliği ve gizliliği bizim için önemlidir. 
+                Bu gizlilik politikası, hangi verileri topladığımızı, bu verileri nasıl kullandığımızı ve koruduğumuzu açıklamaktadır.
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Toplanan Veriler</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Kullanıcı adı ve şifre bilgileri</li>
+                <li class="list-group-item">Öğrenci bilgileri (ad, soyad, sınıf)</li>
+                <li class="list-group-item">Kitap ödünç alma ve iade işlemleri</li>
+                <li class="list-group-item">Duyuru okuma ve etkileşim bilgileri</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Verilerin Kullanımı</h2>
+            <p class="card-text">
+                Topladığımız veriler aşağıdaki amaçlar için kullanılmaktadır:
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Kütüphane yönetim sisteminin işleyişi</li>
+                <li class="list-group-item">Kitap ödünç alma ve iade işlemlerinin takibi</li>
+                <li class="list-group-item">İstatistiksel analizler ve raporlama</li>
+                <li class="list-group-item">Duyuru ve bildirimlerin iletilmesi</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Veri Güvenliği</h2>
+            <p class="card-text">
+                Verilerinizin güvenliği için aşağıdaki önlemleri almaktayız:
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">SSL/TLS şifreleme kullanımı</li>
+                <li class="list-group-item">Düzenli güvenlik güncellemeleri</li>
+                <li class="list-group-item">Erişim kontrolleri ve yetkilendirme</li>
+                <li class="list-group-item">Veri yedekleme ve felaket kurtarma planları</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Çerezler (Cookies)</h2>
+            <p class="card-text">
+                Web sitemiz, kullanıcı deneyimini iyileştirmek için çerezler kullanmaktadır. 
+                Bu çerezler, oturum yönetimi ve site kullanım istatistikleri için kullanılmaktadır.
+            </p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">İletişim</h2>
+            <p class="card-text">
+                Gizlilik politikamız hakkında sorularınız veya endişeleriniz varsa, lütfen bizimle iletişime geçin:
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">E-posta: info@askidakitap.com</li>
+                <li class="list-group-item">Telefon: (555) 123 45 67</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Güncellemeler</h2>
+            <p class="card-text">
+                Bu gizlilik politikası zaman zaman güncellenebilir. 
+                Önemli değişiklikler olduğunda, kullanıcılarımızı bilgilendireceğiz.
+            </p>
+            <p class="card-text text-muted">
+                Son güncelleme: @DateTime.Now.ToString("dd.MM.yyyy")
+            </p>
+        </div>
+    </div>
+</div>

@@ -22,30 +22,22 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Sinif" asp-action="Index">
-                                    <i class="bi bi-people"></i> Sınıflar
-                                </a>
+                                <a class="nav-link text-dark" asp-controller="Kitap" asp-action="Index">Kitaplar</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="KitapKategori" asp-action="Index">
-                                    <i class="bi bi-bookmark"></i> Kitap Kategorileri
-                                </a>
+                                <a class="nav-link text-dark" asp-controller="Ogrenci" asp-action="Index">Öğrenciler</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Kitap" asp-action="Index">
-                                    <i class="bi bi-book"></i> Kitaplar
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Ogrenci" asp-action="Index">
-                                    <i class="bi bi-person-badge"></i> Öğrenciler
-                                </a>
-                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Duyuru" asp-action="Index">Duyurular</a>
+                                </li>
+                            }
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>

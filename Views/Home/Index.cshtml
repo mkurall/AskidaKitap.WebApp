@@ -188,20 +188,32 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Yeni Kitaplar</h6>
-                                <small>3 gün önce</small>
-                            </div>
-                            <p class="mb-1 small">Kütüphanemize yeni kitaplar eklendi.</p>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Okuma Yarışması</h6>
-                                <small>1 hafta önce</small>
-                            </div>
-                            <p class="mb-1 small">Mayıs ayı okuma yarışması başlıyor!</p>
-                        </a>
+                        @foreach (var duyuru in Model.SonDuyurular)
+                        {
+                            var gunFarki = (DateTime.Now.Date - duyuru.OlusturulmaTarihi.Date).Days;
+                            string zamanGosterimi;
+                            
+                            if (gunFarki == 0)
+                            {
+                                zamanGosterimi = "Bugün";
+                            }
+                            else if (gunFarki == 1)
+                            {
+                                zamanGosterimi = "Dün";
+                            }
+                            else
+                            {
+                                zamanGosterimi = $"{gunFarki} gün önce";
+                            }
+
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@duyuru.Baslik</h6>
+                                    <small>@zamanGosterimi</small>
+                                </div>
+                                <p class="mb-1 small">@duyuru.Icerik</p>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
@@ -213,20 +225,32 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Kitap Alındı</h6>
-                                <small>5 dk önce</small>
-                            </div>
-                            <p class="mb-1 small">Ahmet Yılmaz - Sefiller</p>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Kitap İade</h6>
-                                <small>1 saat önce</small>
-                            </div>
-                            <p class="mb-1 small">Ayşe Demir - Suç ve Ceza</p>
-                        </a>
+                        @foreach (var islem in Model.SonIslemler)
+                        {
+                            var gunFarki = (DateTime.Now.Date - islem.IslemTarihi.Date).Days;
+                            string zamanGosterimi;
+                            
+                            if (gunFarki == 0)
+                            {
+                                zamanGosterimi = "Bugün";
+                            }
+                            else if (gunFarki == 1)
+                            {
+                                zamanGosterimi = "Dün";
+                            }
+                            else
+                            {
+                                zamanGosterimi = $"{gunFarki} gün önce";
+                            }
+
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">@islem.IslemTuru</h6>
+                                    <small>@zamanGosterimi</small>
+                                </div>
+                                <p class="mb-1 small">@islem.OgrenciAdi @islem.OgrenciSoyadi - @islem.KitapAdi</p>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>

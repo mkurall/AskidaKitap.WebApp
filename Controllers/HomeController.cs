@@ -4,6 +4,7 @@ using AskidaKitap.WebApp.Data;
 using AskidaKitap.WebApp.Models;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AskidaKitap.WebApp.Controllers
 {
@@ -20,43 +21,83 @@ namespace AskidaKitap.WebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // En çok okunan kitaplar (Top 10)
+            var model = new HomeViewModel();
+
+            // En çok okunan kitapları getir
             var enCokOkunanKitaplar = await _context.KitapKimde
-                .Include(kk => kk.Kitap)
-                .GroupBy(kk => new { kk.Kitap.Id, kk.Kitap.Ad, kk.Kitap.Yazar })
-                .Select(g => new
+                .GroupBy(k => k.Kitap.Ad)
+                .Select(g => new EnCokOkunanKitap
                 {
-                    KitapId = g.Key.Id,
-                    KitapAdi = g.Key.Ad,
-                    Yazar = g.Key.Yazar,
+                    KitapAdi = g.Key,
                     OkunmaSayisi = g.Count()
                 })
-                .OrderByDescending(x => x.OkunmaSayisi)
+                .OrderByDescending(k => k.OkunmaSayisi)
                 .Take(10)
                 .ToListAsync();
 
-            // En çok kitap okuyan öğrenciler (Top 10)
+            // En çok kitap okuyan öğrencileri getir
             var enCokKitapOkuyanOgrenciler = await _context.KitapKimde
-                .Include(kk => kk.Ogrenci)
-                .GroupBy(kk => new { kk.Ogrenci.Id, kk.Ogrenci.Ad, kk.Ogrenci.Soyad })
-                .Select(g => new
+                .GroupBy(k => new { k.Ogrenci.Ad, k.Ogrenci.Soyad })
+                .Select(g => new EnCokKitapOkuyanOgrenci
                 {
-                    OgrenciId = g.Key.Id,
                     OgrenciAdi = g.Key.Ad,
                     OgrenciSoyadi = g.Key.Soyad,
                     OkunanKitapSayisi = g.Count()
                 })
-                .OrderByDescending(x => x.OkunanKitapSayisi)
+                .OrderByDescending(o => o.OkunanKitapSayisi)
                 .Take(10)
                 .ToListAsync();
 
-            var model = new HomeViewModel
-            {
-                EnCokOkunanKitaplar = enCokOkunanKitaplar,
-                EnCokKitapOkuyanOgrenciler = enCokKitapOkuyanOgrenciler
-            };
+            // Son duyuruları getir
+            var sonDuyurular = await _context.Duyurular
+                .OrderByDescending(d => d.OlusturulmaTarihi)
+                .Take(5)
+                .Select(d => new SonDuyuru
+                {
+                    Baslik = d.Baslik,
+                    Icerik = d.Icerik,
+                    OlusturulmaTarihi = d.OlusturulmaTarihi
+                })
+                .ToListAsync();
+
+            // Son işlemleri getir
+            var sonIslemler = await _context.KitapKimde
+                .OrderByDescending(k => k.IadeTarihi ?? k.AlinmaTarihi)
+                .Take(5)
+                .Select(k => new SonIslem
+                {
+                    IslemTuru = k.IadeTarihi == null ? "Alındı" : "İade",
+                    OgrenciAdi = k.Ogrenci.Ad,
+                    OgrenciSoyadi = k.Ogrenci.Soyad,
+                    KitapAdi = k.Kitap.Ad,
+                    IslemTarihi = k.IadeTarihi ?? k.AlinmaTarihi
+                })
+                .ToListAsync();
+
+            model.EnCokOkunanKitaplar = enCokOkunanKitaplar;
+            model.EnCokKitapOkuyanOgrenciler = enCokKitapOkuyanOgrenciler;
+            model.SonDuyurular = sonDuyurular;
+            model.SonIslemler = sonIslemler;
 
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Duyurular()
+        {
+            var duyurular = await _context.Duyurular
+                .OrderByDescending(d => d.OlusturulmaTarihi)
+                .ToListAsync();
+            return View(duyurular);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Islemler()
+        {
+            var islemler = await _context.KitapKimde
+                .OrderByDescending(k => k.IadeTarihi ?? k.AlinmaTarihi)
+                .ToListAsync();
+            return View(islemler);
         }
 
         [HttpGet]

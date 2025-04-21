@@ -1,0 +1,34 @@
+@model AskidaKitap.WebApp.Models.Duyuru
+
+@{
+    ViewData["Title"] = "Duyuru Sil";
+}
+
+<div class="container mt-4">
+    <h1>Duyuru Sil</h1>
+
+    <div class="alert alert-danger">
+        <h4>Bu duyuruyu silmek istediğinizden emin misiniz?</h4>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Baslik</h5>
+            <p class="card-text">@Model.Icerik</p>
+            <div class="text-muted small">
+                <div>Oluşturulma: @Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+                @if (Model.GuncellemeTarihi.HasValue)
+                {
+                    <div>Son Güncelleme: @Model.GuncellemeTarihi.Value.ToString("dd.MM.yyyy HH:mm")</div>
+                }
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Sil" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+            </form>
+        </div>
+    </div>
+</div> 

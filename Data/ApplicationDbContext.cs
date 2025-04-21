@@ -16,6 +16,7 @@ namespace AskidaKitap.WebApp.Data
         public DbSet<KitapKategori> KitapKategoriler { get; set; }
         public DbSet<Sinif> Siniflar { get; set; }
         public DbSet<Ogrenci> Ogrenciler { get; set; }
+        public DbSet<Duyuru> Duyurular { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

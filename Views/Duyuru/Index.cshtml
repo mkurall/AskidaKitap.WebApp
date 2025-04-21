@@ -1,0 +1,48 @@
+@model IEnumerable<AskidaKitap.WebApp.Models.Duyuru>
+
+@{
+    ViewData["Title"] = "Duyurular";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Duyurular</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Yeni Duyuru
+        </a>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Baslik</h5>
+                        <p class="card-text">@item.Icerik</p>
+                        <div class="text-muted small">
+                            <div>Oluşturulma: @item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+                            @if (item.GuncellemeTarihi.HasValue)
+                            {
+                                <div>Son Güncelleme: @item.GuncellemeTarihi.Value.ToString("dd.MM.yyyy HH:mm")</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil"></i> Düzenle
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                                <i class="bi bi-info-circle"></i> Detaylar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Sil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 
